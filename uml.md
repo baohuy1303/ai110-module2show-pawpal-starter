@@ -6,6 +6,7 @@ classDiagram
         +str title
         +int duration_minutes
         +str frequency
+        +str time_of_day
         +bool completed
         +mark_complete()
     }
@@ -28,8 +29,14 @@ classDiagram
     class Scheduler {
         +Owner owner
         +get_todays_tasks() list~Task~
+        +get_pending_tasks() list~Task~
+        +get_completed_tasks() list~Task~
+        +get_tasks_for_pet(pet_name str) list~Task~
         +get_tasks_by_priority() list~Task~
-        +mark_task_complete(title str) bool
+        +get_tasks_sorted_by_time() list~Task~
+        +mark_task_complete(title str) tuple
+        +detect_conflicts() list~str~
+        -_find_pet_for_task(task Task) Pet
     }
 
     Owner "1" --> "1..*" Pet : owns

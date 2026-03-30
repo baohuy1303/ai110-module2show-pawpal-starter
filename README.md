@@ -1,43 +1,55 @@
-# PawPal+ (Module 2 Project)
+# 🐾 PawPal+
 
-You are building **PawPal+**, a Streamlit app that helps a pet owner plan care tasks for their pet.
+A Streamlit app that helps a pet owner build and manage a daily care schedule for their pet.
 
-## Scenario
+---
 
-A busy pet owner needs help staying consistent with pet care. They want an assistant that can:
-
-- Track pet care tasks (walks, feeding, meds, enrichment, grooming, etc.)
-- Consider constraints (time available, priority, owner preferences)
-- Produce a daily plan and explain why it chose that plan
-
-Your job is to design the system first (UML), then implement the logic in Python, then connect it to the Streamlit UI.
-
-## What you will build
-
-Your final app should:
-
-- Let a user enter basic owner + pet info
-- Let a user add/edit tasks (duration + priority at minimum)
-- Generate a daily schedule/plan based on constraints and priorities
-- Display the plan clearly (and ideally explain the reasoning)
-- Include tests for the most important scheduling behaviors
-
-## Getting started
-
-### Setup
+## Setup
 
 ```bash
 python -m venv .venv
-source .venv/bin/activate  # Windows: .venv\Scripts\activate
+.venv\Scripts\activate        # Windows
+# source .venv/bin/activate   # Mac/Linux
 pip install -r requirements.txt
+streamlit run app.py
 ```
 
-### Suggested workflow
+---
 
-1. Read the scenario carefully and identify requirements and edge cases.
-2. Draft a UML diagram (classes, attributes, methods, relationships).
-3. Convert UML into Python class stubs (no logic yet).
-4. Implement scheduling logic in small increments.
-5. Add tests to verify key behaviors.
-6. Connect your logic to the Streamlit UI in `app.py`.
-7. Refine UML so it matches what you actually built.
+## How it works
+
+1. Enter your name and your pet's name and species.
+2. Add care tasks — each task has a title, duration, time of day, and frequency.
+3. Click **Generate schedule** to see tasks sorted chronologically (morning first).
+4. Any scheduling conflicts (overloaded time slots, duplicate tasks) appear as warnings above the schedule.
+5. Use the filter radio to toggle between pending, completed, and all tasks.
+
+Recurring tasks (daily or weekly) automatically renew when marked complete.
+
+---
+
+## Files
+
+| File | Purpose |
+|---|---|
+| `app.py` | Streamlit UI |
+| `pawpal_system.py` | Core classes: Task, Pet, Owner, Scheduler |
+| `main.py` | Terminal demo |
+| `tests/test_pawpal.py` | pytest test suite (9 tests) |
+| `uml.md` | Mermaid.js class diagram |
+
+---
+
+## Tests
+
+```bash
+python -m pytest tests/ -v
+```
+
+---
+
+## 📸 Demo
+
+![PawPal+ screenshot](docs/screenshot1.png)
+![PawPal+ screenshot](docs/screenshot2.png)
+
