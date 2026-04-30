@@ -1,5 +1,6 @@
 import streamlit as st
 from pawpal_system import Owner, Pet, Task, Scheduler
+from agent import optimize_schedule
 
 st.set_page_config(page_title="PawPal+", page_icon="🐾", layout="centered")
 
@@ -64,7 +65,27 @@ st.divider()
 # --- Generate Schedule ---
 st.subheader("Today's Schedule")
 
-if st.button("Generate schedule", type="primary"):
+col_gen, col_ai = st.columns(2)
+
+with col_gen:
+    generate_pressed = st.button("Generate schedule", type="primary", use_container_width=True)
+with col_ai:
+    ai_pressed = st.button("✨ Auto-Fix & Optimize with AI", use_container_width=True)
+
+if ai_pressed:
+    if not st.session_state.tasks:
+        st.warning("Add at least one task before optimizing.")
+    elif not owner_name.strip() or not pet_name.strip():
+        st.warning("Please enter a name for the owner and pet.")
+    else:
+        with st.spinner("AI is optimizing your schedule..."):
+            result = optimize_schedule(pet_name.strip(), species, st.session_state.tasks)
+            st.session_state.tasks = result["optimized_tasks"]
+            st.session_state.ai_explanation = result["explanation"]
+            st.session_state.pop("schedule", None)  # invalidate old schedule
+            st.rerun()
+
+if generate_pressed:
     if not st.session_state.tasks:
         st.warning("Add at least one task before generating a schedule.")
     elif not owner_name.strip() or not pet_name.strip():
@@ -101,6 +122,10 @@ if st.button("Generate schedule", type="primary"):
 
 # --- Persistent Schedule Display ---
 # Lives outside the button block so filter and done interactions don't collapse it
+
+if "ai_explanation" in st.session_state:
+    st.info(f"✨ **AI Optimization:** {st.session_state.ai_explanation}")
+
 if "schedule" not in st.session_state:
     st.info("No schedule generated yet. Add tasks and click Generate.")
 else:
